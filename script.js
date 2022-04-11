@@ -21,6 +21,12 @@ function showSearch() {
     historysearch.innerHTML =' ';
     for( var i = cityHistory.length-1; i >= 0; i--) {
         var btn = document.createElement('button');
+        btn.setAttribute('type', 'button')
+        btn.setAttribute('area-controls', 'forecast')
+        btn.classList.add('citybtn', 'btncity')
+        btn.setAttribute('search', cityHistory[i])
+        btn.textContent = cityHistory[i]
+        historysearch.append(btn)
 
     }
 }
@@ -35,6 +41,13 @@ function localHistory(search){
 }
 // then another function to retrieve data from local storage 
     // getItem 
+function getlocalStorage(){
+    var data = localStorage.getItem('search-history')
+    if(data){
+        cityHistory = JSON.parse(data)
+    }
+    showSearch()
+}
 
 // a function to the fetch 
     // we'll need to dynamically create elements and have them filled 
