@@ -14,7 +14,7 @@ search.on('click', function(){
     forecast.html('');
     forecastTitle.html('');
     geoData(cityName.val())
-    previousSearchButtons();
+    historyButtons();
 })
 
 searchHistory.on('click',function(event){
@@ -53,12 +53,12 @@ function fetchOneCall (lat, lon, city) {
 
             console.log(data);
 
-            renderCurrentWeather(data, city);
-            renderFiveDayForecast(data);
+            renderWeather(data, city);
+            renderForecast(data);
         })
 
 }
-function renderCurrentWeather (data, city) {
+function renderWeather (data, city) {
 
     todaysWeather.removeClass("invisible");
 
@@ -90,4 +90,27 @@ function renderCurrentWeather (data, city) {
             <p>UV Index: ${data.current.humidity} 🟪</p>
         `);
     }
+}
+function renderForecast (data) {
+    forecastTitle.append(`
+        <h2>5-Day Forecast:</h2>
+    `)
+    for (var i = 0; i < 5; i++){
+        
+        forecast.append(`
+            <div id="forecast-day-${i}" class="col border bg-dark text-white">
+                <h3>${moment().add(i + 1, 'days').format('L')}</h3>
+                <img src="https://openweathermap.org/img/w/${data.daily[i].weather[0].icon}.png" alt="${data.daily[i].weather[0].description}">
+                <p>Temp: ${data.daily[i].temp.day}°F</p>
+                <p>Wind: ${data.daily[i].wind_speed} MPH</p>
+                <p>Humidity: ${data.daily[i].humidity} %</p>
+            </div>
+        `)
+    }
+}
+
+function historyButtons () {
+    searchHistory.append(`
+        <button type="button" class="btn btn-secondary col">${cityName.val()}</button><br><br>
+    `)
 }
